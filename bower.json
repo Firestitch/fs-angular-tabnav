@@ -2,8 +2,8 @@
   "name": "fs-angular-navtab", 
   "description": "",
   "main": [
-    "dist/navtab.js",
-    "dist/navtab.css"
+    "dist/tabnav.js",
+    "dist/tabnav.css"
   ],
   "authors": [
     "Firestitch Inc."
