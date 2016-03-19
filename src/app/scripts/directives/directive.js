@@ -4,7 +4,7 @@
     angular.module('fs-angular-tabnav',[])
     .directive('fsTabnav', function($location) {
         return {
-            templateUrl: './views/directives/tabnav.html',
+            templateUrl: 'views/directives/tabnav.html',
             restrict: 'E',
             transclude: true,
             scope: {
