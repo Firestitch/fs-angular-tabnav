@@ -1,0 +1,17 @@
+{
+  "name": "fs-angular-navtab", 
+  "description": "",
+  "main": [
+    "dist/navtab.js",
+    "dist/navtab.css"
+  ],
+  "authors": [
+    "Firestitch Inc."
+  ],
+  "license": "MIT",
+  "ignore": [
+    "src",
+    ".gitignore"
+  ],
+  "private": false
+}

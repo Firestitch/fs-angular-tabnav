@@ -1,0 +1,11 @@
+
+
+fs-tabnav md-ink-bar.md-right,
+fs-tabnav md-ink-bar.md-left {
+    transition: none;
+}
+
+fs-tabnav-content {
+    padding: 12px;
+    display: block;
+}
