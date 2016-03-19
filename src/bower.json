@@ -1,6 +1,6 @@
 {
-  "name": "fs-angular-navtab",
-  "namespace": "navtab",
+  "name": "fs-angular-tabnav",
+  "namespace": "tabnav",
   "port": "5007",   
   "moduleName": "app",
   "version": "0.0.0",

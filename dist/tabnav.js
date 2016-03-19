@@ -1,3 +1,5 @@
+
+
 (function () {
     'use strict';
 
@@ -31,3 +33,21 @@
         };
     });
 })();
+
+angular.module('fs-angular-tabnav').run(['$templateCache', function($templateCache) {
+  'use strict';
+
+  $templateCache.put('views/directives/tabnav.html',
+    "<md-tabs md-selected=\"selected\" md-no-pagination md-enable-disconnect md-border-bottom>\r" +
+    "\n" +
+    "    <md-tab ng-repeat=\"item in items\" ng-click=\"redirect(item.path); $event.preventDefault();\">\r" +
+    "\n" +
+    "        {{item.name}}\r" +
+    "\n" +
+    "    </md-tab>\r" +
+    "\n" +
+    "</md-tabs>\r" +
+    "\n"
+  );
+
+}]);
