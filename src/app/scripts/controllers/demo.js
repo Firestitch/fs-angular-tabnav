@@ -7,8 +7,8 @@
 
     $scope.text = '';
     
-    $scope.submit = function() {
-        alert('submit');
+    $scope.click = function() {
+        alert('clicked!');
     }
 });
 

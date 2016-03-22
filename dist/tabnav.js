@@ -1,5 +1,4 @@
 
-
 (function () {
     'use strict';
 
@@ -20,18 +19,31 @@
                     
                     angular.forEach(clone,function(el) {
                         if(el.nodeName.match(/fs-tabnav-item/i)) {
-                            var path = el.getAttributeNode('fs-url') ? el.getAttributeNode('fs-url').nodeValue : '';                        
-                            $scope.items.push({ path: path, name: el.textContent });
+
+                            var name = el.textContent;
+                            if(el.getAttributeNode('fs-url')) {
+                                $scope.items.push({ url: el.getAttributeNode('fs-url').nodeValue, name: name });
+                            }
+
+                            if(el.getAttributeNode('fs-click')) {
+                                $scope.items.push({ click: el.getAttributeNode('fs-click').nodeValue, scope: scope.$parent.$parent, name: name });
+                            }
                         }
                     });
                 });
 
-                $scope.redirect = function(path) {
-                    $location.path(path);
+                $scope.click = function(item) {
+
+                    if(item.url) {
+                        $location.path(item.url);
+                    
+                    } else if(item.click) {
+                        item.scope.$eval(item.click);
+                    }
                 }
             }
         };
-    });
+    })
 })();
 
 angular.module('fs-angular-tabnav').run(['$templateCache', function($templateCache) {
@@ -40,7 +52,7 @@ angular.module('fs-angular-tabnav').run(['$templateCache', function($templateCac
   $templateCache.put('views/directives/tabnav.html',
     "<md-tabs md-selected=\"selected\" md-no-pagination md-enable-disconnect md-border-bottom>\r" +
     "\n" +
-    "    <md-tab ng-repeat=\"item in items\" ng-click=\"redirect(item.path); $event.preventDefault();\">\r" +
+    "    <md-tab ng-repeat=\"item in items\" ng-click=\"click(item); $event.preventDefault();\">\r" +
     "\n" +
     "        {{item.name}}\r" +
     "\n" +

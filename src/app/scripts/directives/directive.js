@@ -18,16 +18,29 @@
                     
                     angular.forEach(clone,function(el) {
                         if(el.nodeName.match(/fs-tabnav-item/i)) {
-                            var path = el.getAttributeNode('fs-url') ? el.getAttributeNode('fs-url').nodeValue : '';                        
-                            $scope.items.push({ path: path, name: el.textContent });
+
+                            var name = el.textContent;
+                            if(el.getAttributeNode('fs-url')) {
+                                $scope.items.push({ url: el.getAttributeNode('fs-url').nodeValue, name: name });
+                            }
+
+                            if(el.getAttributeNode('fs-click')) {
+                                $scope.items.push({ click: el.getAttributeNode('fs-click').nodeValue, scope: scope.$parent.$parent, name: name });
+                            }
                         }
                     });
                 });
 
-                $scope.redirect = function(path) {
-                    $location.path(path);
+                $scope.click = function(item) {
+
+                    if(item.url) {
+                        $location.path(item.url);
+                    
+                    } else if(item.click) {
+                        item.scope.$eval(item.click);
+                    }
                 }
             }
         };
-    });
+    })
 })();
