@@ -1,9 +1,10 @@
+(function () { angular.module('fs-angular-tabnav',[]); })();
 
 (function () {
     'use strict';
 
     angular.module('fs-angular-tabnav',[])
-    .directive('fsTabnav', function($location) {
+    .directive('fsTabnav', function($location, $interpolate) {
         return {
             templateUrl: 'views/directives/tabnav.html',
             restrict: 'E',
@@ -16,13 +17,14 @@
                 $scope.items = [];
 
                 $transclude(function(clone, scope) {
-                    
+                  
                     angular.forEach(clone,function(el) {
                         if(el.nodeName.match(/fs-tabnav-item/i)) {
 
                             var name = el.textContent;
                             if(el.getAttributeNode('fs-url')) {
-                                $scope.items.push({ url: el.getAttributeNode('fs-url').nodeValue, name: name });
+                                var url = $interpolate(el.getAttributeNode('fs-url').nodeValue)(scope.$parent.$parent);
+                                $scope.items.push({ url: url, name: name });
                             }
 
                             if(el.getAttributeNode('fs-click')) {
@@ -30,6 +32,7 @@
                             }
                         }
                     });
+
                 });
 
                 $scope.click = function(item) {
