@@ -1,5 +1,5 @@
 {
-  "name": "fs-angular-navtab", 
+  "name": "fs-angular-tabnav",
   "description": "",
   "main": [
     "dist/tabnav.js",
