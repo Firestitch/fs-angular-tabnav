@@ -71,21 +71,21 @@
                 }
 
                 $scope.accent = setRGB('accent');
-
+                $scope.selected = $scope.selected===undefined ? 0 : $scope.selected;
                 $scope.items = [];
+                
                 $transclude(function(clone, scope) {
                     
                     var index = 0;
                     angular.forEach(clone,function(el) {
                         if(el.nodeName.match(/fs-tabnav-item/i)) {
-                                     
-                            var selected = index==$scope.selected;
+                               
                             var item = { name: el.textContent, href: 'javascript:;' };
                             if(el.getAttributeNode('fs-url')) {
                                 item.url = $interpolate(el.getAttributeNode('fs-url').nodeValue)(scope.$parent.$parent);
                                 
                                 if(item.url==$location.$$url) {
-                                    selected = true;
+                                    $scope.selected = index;
                                 }
                             }
 
@@ -94,26 +94,27 @@
                                 item.scope = scope.$parent.$parent;
                             }
 
-                            if(selected) {
-                                item.style = { color: $scope.accent, borderColor: $scope.accent };
-                            }
-
                             $scope.items.push(item);
                             index++;
                         }
                     });
+       
+                    var item = $scope.items[$scope.selected];
+                    if(item) {
+                      item.style = { color: $scope.accent, borderColor: $scope.accent };
+                    }             
                 });
 
                 $scope.click = function(item, $event) {
 
-                    angular.forEach($scope.items,function(tmp) {
-                        tmp.style = item.$$hashKey==tmp.$$hashKey ? { color: $scope.accent, borderColor: $scope.accent } : {};
-                    });
+                  angular.forEach($scope.items,function(tmp) {
+                      tmp.style = item.$$hashKey==tmp.$$hashKey ? { color: $scope.accent, borderColor: $scope.accent } : {};
+                  });
 
-                    if(item.click) {
-                        item.scope.$eval(item.click);
-                        $event.preventDefault();
-                    }
+                  if(item.click) {
+                      item.scope.$eval(item.click);
+                      $event.preventDefault();
+                  }
                 }
             }
         };
