@@ -16,6 +16,11 @@ angular
         controller: 'DemoCtrl',       
     })
 
+    .when('/settings', {
+        templateUrl: 'views/demo.html',
+        controller: 'DemoCtrl',       
+    })    
+
     .when('/404', {
         templateUrl: 'views/404.html'
     })

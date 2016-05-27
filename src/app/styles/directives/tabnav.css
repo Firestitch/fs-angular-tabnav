@@ -9,3 +9,13 @@ fs-tabnav-content {
     padding: 12px;
     display: block;
 }
+
+fs-tabnav .md-tabs {
+	border-bottom: 1px solid #E1E1E1;
+}
+
+fs-tabnav .md-tabs a {
+	color: #757575;
+	text-decoration: none;
+	border-bottom: 2px solid transparent;
+}

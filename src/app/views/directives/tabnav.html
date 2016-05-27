@@ -1,5 +1,8 @@
-<md-tabs md-selected="selected" md-no-pagination md-enable-disconnect md-border-bottom>
-    <md-tab ng-repeat="item in items" ng-click="click(item); $event.preventDefault();">
-        {{item.name}}
-    </md-tab>
-</md-tabs>
+<div class="md-tabs" md-selected="selected">
+    
+	<a ng-href="{{item.url}}" ng-repeat="item in items" ng-click="click(item,$event);" class="md-tab" ng-style="item.style">
+    	{{item.name}}
+	</a>
+
+	<div class="cf"></div>
+</div>
