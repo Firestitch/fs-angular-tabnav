@@ -8,17 +8,17 @@ angular
     'ngMaterial',
     'fs-angular-tabnav'
 ])
-.config(function ($routeProvider, $mdThemingProvider) {
+.config(function ($routeProvider, $mdThemingProvider, $locationProvider) {
 
     $routeProvider
     .when('/demo', {
         templateUrl: 'views/demo.html',
-        controller: 'DemoCtrl',       
+        controller: 'DemoCtrl'
     })
 
     .when('/settings', {
         templateUrl: 'views/demo.html',
-        controller: 'DemoCtrl',       
+        controller: 'DemoCtrl'    
     })    
 
     .when('/404', {
@@ -28,6 +28,8 @@ angular
     .otherwise({
         redirectTo: '/demo'
     });
+
+    //$locationProvider.html5Mode(true);
 
     $mdThemingProvider.definePalette('amazingPaletteName', {
         '50': 'ffebee',

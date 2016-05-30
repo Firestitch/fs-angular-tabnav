@@ -13,61 +13,62 @@
             },
 
             link: function($scope, element, attrs, ctrl, $transclude) {
-                
-                function setRGB(input) {
+              
+              var s = $location;
+              function setRGB(input) {
 
-                    var themeProvider = fsTabnavTheme.themeColors;
+                  var themeProvider = fsTabnavTheme.themeColors;
 
-                    var themeName     = 'default';
-                    var hueName       = 'default';
-                    var intentionName = 'primary';
-                    var hueKey,theme,hue,intention;
-                    var shades = {
-                      '50' :'50' ,'100':'100','200':'200','300':'300','400':'400',
-                      '500':'500','600':'600','700':'700','800':'800','A100':'A100',
-                      'A200':'A200','A400':'A400','A700':'A700'
-                    };
-                    var intentions = {
-                      primary:'primary',
-                      accent:'accent',
-                      warn:'warn',
-                      background:'background'
-                    };
-                    var hues = {
-                      'default':'default',
-                      'hue-1':'hue-1',
-                      'hue-2':'hue-2',
-                      'hue-3':'hue-3'
-                    };
+                  var themeName     = 'default';
+                  var hueName       = 'default';
+                  var intentionName = 'primary';
+                  var hueKey,theme,hue,intention;
+                  var shades = {
+                    '50' :'50' ,'100':'100','200':'200','300':'300','400':'400',
+                    '500':'500','600':'600','700':'700','800':'800','A100':'A100',
+                    'A200':'A200','A400':'A400','A700':'A700'
+                  };
+                  var intentions = {
+                    primary:'primary',
+                    accent:'accent',
+                    warn:'warn',
+                    background:'background'
+                  };
+                  var hues = {
+                    'default':'default',
+                    'hue-1':'hue-1',
+                    'hue-2':'hue-2',
+                    'hue-3':'hue-3'
+                  };
 
-                    // Do our best to parse out the attributes
-                    angular.forEach(input.split(' '), function(value, key) {
-                      if (0 === key && 'default' === value) {
-                        themeName = value;
-                      } else
-                      if (intentions[value]) {
-                        intentionName = value;
-                      } else if (hues[value]) {
-                        hueName = value;
-                      } else if (shades[value]) {
-                        hueKey = value;
+                  // Do our best to parse out the attributes
+                  angular.forEach(input.split(' '), function(value, key) {
+                    if (0 === key && 'default' === value) {
+                      themeName = value;
+                    } else
+                    if (intentions[value]) {
+                      intentionName = value;
+                    } else if (hues[value]) {
+                      hueName = value;
+                    } else if (shades[value]) {
+                      hueKey = value;
+                    }
+                  });
+
+                  // Lookup and assign the right values
+                  if ((theme = themeProvider._THEMES[themeName])) {
+
+                    if ((intention = theme.colors[intentionName]) ) {
+
+
+                      if (!hueKey) {
+                        hueKey = intention.hues[hueName];
                       }
-                    });
-
-                    // Lookup and assign the right values
-                    if ((theme = themeProvider._THEMES[themeName])) {
-
-                      if ((intention = theme.colors[intentionName]) ) {
-
-
-                        if (!hueKey) {
-                          hueKey = intention.hues[hueName];
-                        }
-                        if ((hue = themeProvider._PALETTES[intention.name][hueKey]) ) {
-                          return 'rgb('+hue.value[0]+','+hue.value[1]+','+hue.value[2]+')';                      
-                        }
+                      if ((hue = themeProvider._PALETTES[intention.name][hueKey]) ) {
+                        return 'rgb('+hue.value[0]+','+hue.value[1]+','+hue.value[2]+')';                      
                       }
                     }
+                  }
                 }
 
                 $scope.accent = setRGB('accent');
@@ -83,9 +84,17 @@
                             var item = { name: el.textContent, href: 'javascript:;' };
                             if(el.getAttributeNode('fs-url')) {
                                 item.url = $interpolate(el.getAttributeNode('fs-url').nodeValue)(scope.$parent.$parent);
-                                
-                                if(item.url==$location.$$url) {
-                                    $scope.selected = index;
+
+                                if(!item.url.match(/^http/i)) {
+                                  item.url = item.url.replace(/^#/,'');
+
+                                  if(!$location.$$html5) {
+                                    item.url = '#' + item.url;
+                                  }
+                                  
+                                  if(item.url==$location.$$url) {
+                                      $scope.selected = index;
+                                  }
                                 }
                             }
 
