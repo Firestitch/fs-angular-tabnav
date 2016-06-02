@@ -87,9 +87,9 @@
                                 if(!item.url.match(/^http/i)) {
                                   item.url = item.url.replace(/^#/,'');
 
-                                  if(!$location.$$html5) {
-                                    item.url = '#' + item.url;
-                                  }
+                                  // if(!$location.$$html5) {
+                                  //   item.url = '#' + item.url;
+                                  // }
                                   
                                   if(item.url==$location.$$url) {
                                       $scope.selected = index;

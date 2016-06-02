@@ -88,9 +88,9 @@
                                 if(!item.url.match(/^http/i)) {
                                   item.url = item.url.replace(/^#/,'');
 
-                                  if(!$location.$$html5) {
-                                    item.url = '#' + item.url;
-                                  }
+                                  // if(!$location.$$html5) {
+                                  //   item.url = '#' + item.url;
+                                  // }
                                   
                                   if(item.url==$location.$$url) {
                                       $scope.selected = index;
@@ -146,22 +146,14 @@ angular.module('fs-angular-tabnav').run(['$templateCache', function($templateCac
   'use strict';
 
   $templateCache.put('views/directives/tabnav.html',
-    "<div class=\"md-tabs\" md-selected=\"selected\">\r" +
+    "<div class=\"md-tabs\" md-selected=\"selected\">\n" +
+    "    \n" +
+    "\t<a ng-href=\"{{item.url}}\" ng-repeat=\"item in items\" ng-click=\"click(item,$event);\" class=\"md-tab\" ng-style=\"item.style\">\n" +
+    "    \t{{item.name}}\n" +
+    "\t</a>\n" +
     "\n" +
-    "    \r" +
-    "\n" +
-    "\t<a ng-href=\"{{item.url}}\" ng-repeat=\"item in items\" ng-click=\"click(item,$event);\" class=\"md-tab\" ng-style=\"item.style\">\r" +
-    "\n" +
-    "    \t{{item.name}}\r" +
-    "\n" +
-    "\t</a>\r" +
-    "\n" +
-    "\r" +
-    "\n" +
-    "\t<div class=\"cf\"></div>\r" +
-    "\n" +
-    "</div>\r" +
-    "\n"
+    "\t<div class=\"cf\"></div>\n" +
+    "</div>\n"
   );
 
 }]);
