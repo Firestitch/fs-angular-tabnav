@@ -151,14 +151,22 @@ angular.module('fs-angular-tabnav').run(['$templateCache', function($templateCac
   'use strict';
 
   $templateCache.put('views/directives/tabnav.html',
-    "<div class=\"md-tabs\" md-selected=\"selected\">\n" +
-    "    \n" +
-    "\t<a ng-href=\"{{item.url}}\" ng-repeat=\"item in items\" ng-click=\"click(item,$event);\" class=\"md-tab\" ng-style=\"item.style\">\n" +
-    "    \t{{item.name}}\n" +
-    "\t</a>\n" +
+    "<div class=\"md-tabs\" md-selected=\"selected\">\r" +
     "\n" +
-    "\t<div class=\"cf\"></div>\n" +
-    "</div>\n"
+    "    \r" +
+    "\n" +
+    "\t<a ng-href=\"{{item.url}}\" ng-repeat=\"item in items\" ng-click=\"click(item,$event);\" class=\"md-tab\" ng-style=\"item.style\">\r" +
+    "\n" +
+    "    \t{{item.name}}\r" +
+    "\n" +
+    "\t</a>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "\t<div class=\"cf\"></div>\r" +
+    "\n" +
+    "</div>\r" +
+    "\n"
   );
 
 }]);
