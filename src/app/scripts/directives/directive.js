@@ -63,7 +63,7 @@
                         hueKey = intention.hues[hueName];
                       }
                       if ((hue = themeProvider._PALETTES[intention.name][hueKey]) ) {
-                        return 'rgb('+hue.value[0]+','+hue.value[1]+','+hue.value[2]+')';                      
+                        return 'rgb('+hue.value[0]+','+hue.value[1]+','+hue.value[2]+')';
                       }
                     }
                   }
@@ -79,9 +79,9 @@
                     angular.forEach(clone,function(el) {
                         if(el.nodeName.match(/fs-tabnav-item/i)) {
                             
-                            var name = el.textContent;                            
+                            var name = el.textContent;
 
-                            if(name.match(/^{{/)) {                              
+                            if(name.match(/^{{/)) {
                               scope.$watch($interpolate(name), function (value) {
                                 item.name = $interpolate(value)(scope.$parent.$parent);
                               });
