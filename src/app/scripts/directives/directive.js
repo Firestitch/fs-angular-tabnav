@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('fs-angular-tabnav',[])
-    .directive('fsTabnav', function($location, $interpolate, fsTabnavTheme) {
+    .directive('fsTabnav', function($location, $interpolate, fsTabnavTheme, $compile) {
         return {
             templateUrl: 'views/directives/tabnav.html',
             restrict: 'E',
@@ -11,9 +11,8 @@
                selected: "=?fsSelected"
             },
 
-            link: function($scope, element, attrs, ctrl, $transclude) {
-              
-              var s = $location;
+            link: function($scope, element, attrs, ctrl, $transclude) {            
+
               function setRGB(input) {
 
                   var themeProvider = fsTabnavTheme.themeColors;
@@ -79,20 +78,29 @@
                     var index = 0;
                     angular.forEach(clone,function(el) {
                         if(el.nodeName.match(/fs-tabnav-item/i)) {
-                               
-                            var item = { name: el.textContent, href: 'javascript:;' };
+                            
+                            var name = el.textContent;                            
+
+                            if(name.match(/^{{/)) {                              
+                              scope.$watch($interpolate(name), function (value) {
+                                item.name = $interpolate(value)(scope.$parent.$parent);
+                              });
+                            }
+
+                            var item = { name: name, href: 'javascript:;' };
+                            
                             if(el.getAttributeNode('fs-url')) {
                                 item.url = $interpolate(el.getAttributeNode('fs-url').nodeValue)(scope.$parent.$parent);
 
                                 if(!item.url.match(/^http/i)) {
                                   item.url = item.url.replace(/^#/,'');
 
-                                  if(!$location.$$html5) {
-                                    item.url = '#' + item.url;
-                                  }
-                                  
                                   if(item.url==$location.$$url) {
                                       $scope.selected = index;
+                                  }
+
+                                  if(!$location.$$html5) {
+                                    item.url = '#' + item.url;
                                   }
                                 }
                             }
@@ -110,7 +118,7 @@
                     var item = $scope.items[$scope.selected];
                     if(item) {
                       item.style = { color: $scope.accent, borderColor: $scope.accent };
-                    }             
+                    }         
                 });
 
                 $scope.click = function(item, $event) {
@@ -137,5 +145,3 @@
     };
   });    
 })();
-
-
