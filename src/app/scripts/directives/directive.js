@@ -1,3 +1,4 @@
+
 (function () {
     'use strict';
 
@@ -128,8 +129,9 @@
                   });
 
                   if(item.click) {
-                      item.scope.$eval(item.click);
+                      item.scope.$eval(item.click,{ '$event': $event });                      
                       $event.preventDefault();
+                      $event.stopPropagation();
                   }
                 }
             }
