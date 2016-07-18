@@ -70,6 +70,15 @@
                   }
                 }
 
+                $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){ 
+
+                    angular.forEach($scope.items,function(item,index) {
+                      if(item.url==$location.$$url) {
+                        $scope.selected = index;
+                      }
+                    });
+                });
+
                 $scope.accent = setRGB('accent');
                 $scope.selected = $scope.selected===undefined ? 0 : $scope.selected;
                 $scope.items = [];
@@ -97,7 +106,7 @@
                                   item.url = item.url.replace(/^#/,'');
 
                                   if(item.url==$location.$$url) {
-                                      $scope.selected = index;
+                                    $scope.selected = index;
                                   }
 
                                   if(!$location.$$html5) {
@@ -110,24 +119,19 @@
                                 item.click = el.getAttributeNode('fs-click').nodeValue;
                                 item.scope = scope.$parent.$parent;
                             }
+                            
+                            item.style = { color: $scope.accent, borderColor: $scope.accent };
 
                             $scope.items.push(item);
                             index++;
                         }
-                    });
-       
-                    var item = $scope.items[$scope.selected];
-                    if(item) {
-                      item.style = { color: $scope.accent, borderColor: $scope.accent };
-                    }         
+                    });         
                 });
 
-                $scope.click = function(item, $event) {
+                $scope.click = function(item, $event, index) {
 
-                  angular.forEach($scope.items,function(tmp) {
-                      tmp.style = item.$$hashKey==tmp.$$hashKey ? { color: $scope.accent, borderColor: $scope.accent } : {};
-                  });
-
+                  $scope.selected = index;
+                  
                   if(item.click) {
                       item.scope.$eval(item.click);
                       $event.preventDefault();
@@ -155,7 +159,7 @@ angular.module('fs-angular-tabnav').run(['$templateCache', function($templateCac
     "\n" +
     "    \r" +
     "\n" +
-    "\t<a ng-href=\"{{item.url}}\" ng-repeat=\"item in items\" ng-click=\"click(item,$event);\" class=\"md-tab\" ng-style=\"item.style\">\r" +
+    "\t<a ng-href=\"{{item.url}}\" ng-repeat=\"item in items\" ng-click=\"click(item,$event,$index);\" class=\"md-tab\" ng-style=\"selected==$index && item.style\">\r" +
     "\n" +
     "    \t{{item.name}}\r" +
     "\n" +
@@ -165,8 +169,7 @@ angular.module('fs-angular-tabnav').run(['$templateCache', function($templateCac
     "\n" +
     "\t<div class=\"cf\"></div>\r" +
     "\n" +
-    "</div>\r" +
-    "\n"
+    "</div>"
   );
 
 }]);

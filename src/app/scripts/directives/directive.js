@@ -1,4 +1,3 @@
-
 (function () {
     'use strict';
 
@@ -70,6 +69,15 @@
                   }
                 }
 
+                $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){ 
+
+                    angular.forEach($scope.items,function(item,index) {
+                      if(item.url==$location.$$url) {
+                        $scope.selected = index;
+                      }
+                    });
+                });
+
                 $scope.accent = setRGB('accent');
                 $scope.selected = $scope.selected===undefined ? 0 : $scope.selected;
                 $scope.items = [];
@@ -97,7 +105,7 @@
                                   item.url = item.url.replace(/^#/,'');
 
                                   if(item.url==$location.$$url) {
-                                      $scope.selected = index;
+                                    $scope.selected = index;
                                   }
 
                                   if(!$location.$$html5) {
@@ -110,28 +118,22 @@
                                 item.click = el.getAttributeNode('fs-click').nodeValue;
                                 item.scope = scope.$parent.$parent;
                             }
+                            
+                            item.style = { color: $scope.accent, borderColor: $scope.accent };
 
                             $scope.items.push(item);
                             index++;
                         }
-                    });
-       
-                    var item = $scope.items[$scope.selected];
-                    if(item) {
-                      item.style = { color: $scope.accent, borderColor: $scope.accent };
-                    }         
+                    });         
                 });
 
-                $scope.click = function(item, $event) {
+                $scope.click = function(item, $event, index) {
 
-                  angular.forEach($scope.items,function(tmp) {
-                      tmp.style = item.$$hashKey==tmp.$$hashKey ? { color: $scope.accent, borderColor: $scope.accent } : {};
-                  });
-
+                  $scope.selected = index;
+                  
                   if(item.click) {
-                      item.scope.$eval(item.click,{ '$event': $event });                      
+                      item.scope.$eval(item.click);
                       $event.preventDefault();
-                      $event.stopPropagation();
                   }
                 }
             }
