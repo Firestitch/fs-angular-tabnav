@@ -104,7 +104,7 @@
                     return event.preventDefault();
                   }
 
-                  $scope.selected = index;
+                  $scope.selected = item.name || index;
 
                   if(item.click) {
                       item.scope.$eval(item.click);
