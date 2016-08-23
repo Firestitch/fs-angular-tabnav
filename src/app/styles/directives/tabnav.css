@@ -14,6 +14,11 @@ fs-tabnav .md-tabs {
 	border-bottom: 1px solid #E1E1E1;
 }
 
+fs-tabnav a.disabled {
+	cursor: default;
+	color: #ccc !important;
+}
+
 fs-tabnav .md-tabs a {
 	color: #757575;
 	text-decoration: none;

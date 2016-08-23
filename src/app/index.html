@@ -3,7 +3,6 @@
   <head>
     <meta charset="utf-8">
     <title></title>
-    <base href="/">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,21 +10,21 @@
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
+    <link rel="stylesheet" href="bower_components/fs-boilerplate-styles/dist/main.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
-    <!-- endbuild -->
-
     <link rel="stylesheet" href="styles/directives/tabnav.css">
+    <!-- endbuild -->
   </head>
-  <body ng-controller="BodyCtrl" class="ng-cloak">
+  <body class="ng-cloak">
 
     <!-- View Container for "normal" pages -->
-    <md-content ng-if="!viewStates.hasSubMenu" layout="row" layout-align="center center">
-        <div flex="50">  
-            <h1 ng-cloak>Demo {{app_name}}</h1>         
-            <md-card-content ng-view></md-card-content>
+    <md-content layout="row" layout-align="center center">
+        <div flex="50">
+            <h1 ng-cloak>Demo {{app_name}}</h1>
+            <div ui-view></div>
         </div>
     </md-content>
 
@@ -36,30 +35,23 @@
     <script src="bower_components/angular-aria/angular-aria.js"></script>
     <script src="bower_components/angular-messages/angular-messages.js"></script>
     <script src="bower_components/angular-material/angular-material.js"></script>
-    <script src="bower_components/angular-route/angular-route.js"></script>
-    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-    <script src="bower_components/angular-touch/angular-touch.js"></script>
-    <!-- endbower -->    
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <!-- endbower -->
     <!-- endbuild -->
 
     <!-- build:js({.tmp,dist,app}) scripts/scripts.js -->
+
     <script src="config/config.js"></script>
     <script src="scripts/app.js"></script>
-    
+
     <script src="scripts/directives/directive.js"></script>
-    
-    <script src="scripts/filters/filter.js"></script>
-    
+
     <script src="scripts/services/service.js"></script>
-    <script src="scripts/services/alert.js"></script>
-    <script src="scripts/services/store.js"></script>
-    <script src="scripts/services/session.js"></script>
-    <script src="scripts/services/config.js"></script>
-    <script src="scripts/services/dummy.js"></script>
-    
+
+    <script src="scripts/filters/filter.js"></script>
+
     <script src="scripts/controllers/demo.js"></script>
-    <script src="scripts/controllers/body.js"></script>
-    
+
     <!-- endbuild -->
 </body>
 </html>

@@ -1,16 +1,15 @@
 {
   "name": "fs-angular-tabnav",
   "namespace": "tabnav",
-  "port": "5007",   
+  "port": "5017",
   "moduleName": "app",
   "version": "0.0.0",
   "appPath": "app",
   "dependencies": {
     "angular": "1.5.0",
-    "angular-material": "1.0.5",
-    "angular-route": "1.5.0",
-    "angular-sanitize": "1.5.0",
-    "angular-touch": "1.5.0"
+    "angular-material": "1.0.9",
+    "angular-ui-router": "0.2.15",
+    "fs-boilerplate-styles": "latest"
   },
   "devDependencies": {
     "angular-mocks": "1.5.0",
