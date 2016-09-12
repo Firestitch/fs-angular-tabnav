@@ -63,6 +63,24 @@
                             if(el.getAttributeNode('fs-url')) {
                                 item.url = $interpolate(el.getAttributeNode('fs-url').nodeValue)(scope.$parent.$parent);
 
+                                scope.$watch(
+                                    function() {
+                                        return $interpolate(el.getAttributeNode('fs-url').nodeValue)(scope.$parent.$parent);
+                                    },
+                                    function (newValue, oldValue) {
+                                        if (newValue != oldValue) {
+                                            item.url = $interpolate(newValue)(scope.$parent.$parent);
+
+                                            if (!item.url.match(/^http/i)) {
+                                                item.url = item.url.replace(/^#/, '');
+                                                if (!$location.$$html5) {
+                                                    item.url = '#' + item.url;
+                                                }
+                                            }
+                                        }
+                                    }
+                                );
+
                                 if(!item.url.match(/^http/i)) {
                                   item.url = item.url.replace(/^#/,'');
 
