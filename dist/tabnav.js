@@ -1,4 +1,5 @@
 
+
 (function () {
     'use strict';
 
@@ -16,6 +17,7 @@
      * @restrict E
      * @param {string} fs-url The url that the browser will be redirected to when the tab is clicked
      * @param {string} fs-name The name of the tab used for selecting the active tab through fs-tabnav.fs-selected
+     * @param {expression} fs-show The expression used to show the tab. Defaults to true
      * @param {string} fs-disabled When set to true the tab will be in a disabled state
      * @param {function} fs-click A function that is fired when the tab is clicked
     */
@@ -59,10 +61,28 @@
                               });
                             }
 
-                            var item = { template: template, href: 'javascript:;' };
+                            var item = { template: template, href: 'javascript:;', show: true };
 
                             if(el.getAttributeNode('fs-url')) {
                                 item.url = $interpolate(el.getAttributeNode('fs-url').nodeValue)(scope.$parent.$parent);
+
+                                scope.$watch(
+                                    function() {
+                                        return $interpolate(el.getAttributeNode('fs-url').nodeValue)(scope.$parent.$parent);
+                                    },
+                                    function (newValue, oldValue) {
+                                        if (newValue != oldValue) {
+                                            item.url = $interpolate(newValue)(scope.$parent.$parent);
+
+                                            if (!item.url.match(/^http/i)) {
+                                                item.url = item.url.replace(/^#/, '');
+                                                if (!$location.$$html5) {
+                                                    item.url = '#' + item.url;
+                                                }
+                                            }
+                                        }
+                                    }
+                                );
 
                                 if(!item.url.match(/^http/i)) {
                                   item.url = item.url.replace(/^#/,'');
@@ -80,6 +100,12 @@
                             if(el.getAttributeNode('fs-click')) {
                                 item.click = el.getAttributeNode('fs-click').nodeValue;
                                 item.scope = scope.$parent.$parent;
+                            }
+
+                            if(el.getAttributeNode('fs-show')) {
+                              $scope.$parent.$watch(el.getAttributeNode('fs-show').nodeValue,function(value) {
+                                item.show = value;
+                              });
                             }
 
                             if(el.getAttributeNode('fs-name')) {
@@ -190,9 +216,7 @@ angular.module('fs-angular-tabnav').run(['$templateCache', function($templateCac
   $templateCache.put('views/directives/tabnav.html',
     "<div class=\"md-tabs\">\r" +
     "\n" +
-    "\r" +
-    "\n" +
-    "\t<a ng-href=\"{{item.url}}\" ng-repeat=\"item in items\" ng-click=\"click(item,$event,$index);\" class=\"md-tab\" ng-class=\"{ disabled: item.disabled }\" ng-style=\"(selected==$index || selected==item.name) && item.style\">\r" +
+    "\t<a ng-href=\"{{item.url}}\" ng-repeat=\"item in items\" ng-click=\"click(item,$event,$index);\" class=\"md-tab\" ng-class=\"{ disabled: item.disabled, show: item.show }\" ng-style=\"(selected==$index || selected==item.name) && item.style\">\r" +
     "\n" +
     "    \t{{item.template}}\r" +
     "\n" +

@@ -10,6 +10,14 @@ fs-tabnav-content {
     display: block;
 }
 
+fs-tabnav .md-tab {
+	display: none;
+}
+
+fs-tabnav .md-tab.show {
+	display: inline;
+}
+
 fs-tabnav .md-tabs {
 	border-bottom: 1px solid #E1E1E1;
 }

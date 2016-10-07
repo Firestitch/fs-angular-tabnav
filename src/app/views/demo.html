@@ -1,5 +1,5 @@
 <fs-tabnav fs-selected="selected">
-    <fs-tabnav-item fs-url="#/demo" fs-name="information" fs-disabled="disabled">Information</fs-tabnav-item>
+    <fs-tabnav-item fs-url="#/demo" fs-name="information" fs-disabled="disabled" fs-show="show">Information</fs-tabnav-item>
     <fs-tabnav-item fs-url="#/settings" fs-name="settings" fs-disabled="disabled">Settings</fs-tabnav-item>
     <fs-tabnav-item fs-click="click()" fs-name="click" fs-disabled="disabled">Click</fs-tabnav-item>
     <fs-tabnav-item fs-click="text='Clicked text!!'" fs-name="clicktext" fs-disabled="disabled">Click: Text</fs-tabnav-item>
@@ -8,13 +8,13 @@
 	Text: {{text}}
 </fs-tabnav-content>
 
-
 <br><br><br><br>
 
 <div><a href ng-click="selected='information'">Tab: Information</a></div>
 <div><a href ng-click="selected='settings'">Tab: Settings</a></div>
 <div><a href ng-click="selected='click'">Tab: Click</a></div>
 <div><a href ng-click="selected='clicktext'">Tab: Click Text</a></div>
+<div><a href ng-click="show=!show">Toggle Tab ({{show ? 'show' : 'hide' }})</a></div>
 
 <br><br>
 

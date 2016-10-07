@@ -10,6 +10,7 @@
     $scope.selected = 1;
 
     $scope.disabled = false;
+    $scope.show = false;
 
     $scope.click = function() {
         alert('clicked!');
