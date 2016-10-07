@@ -33,14 +33,20 @@
 
             link: function($scope, element, attrs, ctrl, $transclude) {
 
-                $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
-
+                var stateChangeSuccess = function(event, toState, toParams, fromState, fromParams) {
                     angular.forEach($scope.items,function(item,index) {
                       if(item.url==$location.$$url) {
                         $scope.selected = index;
                       }
                     });
-                });
+                }
+
+                $scope.$on('$stateChangeSuccess',stateChangeSuccess);
+
+                /*
+                $scope.$on('$destroy', function () {
+                  stateChangeSuccess();
+                });*/
 
                 $scope.accent = setRGB('accent');
                 $scope.selected = $scope.selected===undefined ? 0 : $scope.selected;
