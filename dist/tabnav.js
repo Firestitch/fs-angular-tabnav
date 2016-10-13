@@ -46,7 +46,6 @@
 
                 /*
                 $scope.$on('$destroy', function () {
-                  debugger;
                   stateChangeSuccess();
                 });*/
 
@@ -138,7 +137,11 @@
                     return event.preventDefault();
                   }
 
-                  $scope.selected = item.name || index;
+                  //if item has a .url $scope.selected will get updated by stateChangeSuccess().
+                  //the one exception is if the current url is the same as item.url then stateChangeSuccess() wont fire  we need to manually change $scope.selected
+                  var url = item.url ? item.url.replace(/^#/,'') : false;
+				  if(!url || url==$location.$$url)
+                    $scope.selected = item.name || index;
 
                   if(item.click) {
                       item.scope.$eval(item.click);
@@ -221,18 +224,12 @@ angular.module('fs-angular-tabnav').run(['$templateCache', function($templateCac
   'use strict';
 
   $templateCache.put('views/directives/tabnav.html',
-    "<div class=\"md-tabs\">\r" +
+    "<div class=\"md-tabs\">\n" +
+    "\t<a ng-href=\"{{item.url}}\" ng-repeat=\"item in items\" ng-click=\"click(item,$event,$index);\" class=\"md-tab\" ng-class=\"{ disabled: item.disabled, show: item.show }\" ng-style=\"(selected==$index || selected==item.name) && item.style\">\n" +
+    "    \t{{item.template}}\n" +
+    "\t</a>\n" +
     "\n" +
-    "\t<a ng-href=\"{{item.url}}\" ng-repeat=\"item in items\" ng-click=\"click(item,$event,$index);\" class=\"md-tab\" ng-class=\"{ disabled: item.disabled, show: item.show }\" ng-style=\"(selected==$index || selected==item.name) && item.style\">\r" +
-    "\n" +
-    "    \t{{item.template}}\r" +
-    "\n" +
-    "\t</a>\r" +
-    "\n" +
-    "\r" +
-    "\n" +
-    "\t<div class=\"cf\"></div>\r" +
-    "\n" +
+    "\t<div class=\"cf\"></div>\n" +
     "</div>"
   );
 

@@ -136,7 +136,11 @@
                     return event.preventDefault();
                   }
 
-                  $scope.selected = item.name || index;
+                  //if item has a .url $scope.selected will get updated by stateChangeSuccess().
+                  //the one exception is if the current url is the same as item.url then stateChangeSuccess() wont fire  we need to manually change $scope.selected
+                  var url = item.url ? item.url.replace(/^#/,'') : false;
+				  if(!url || url==$location.$$url)
+                    $scope.selected = item.name || index;
 
                   if(item.click) {
                       item.scope.$eval(item.click);
