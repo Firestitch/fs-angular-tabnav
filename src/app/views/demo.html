@@ -8,6 +8,8 @@
 	Text: {{text}}
 </fs-tabnav-content>
 
+<h3>Selected: {{selected}}</h3>
+
 <br><br><br><br>
 
 <div><a href ng-click="selected='information'">Tab: Information</a></div>
@@ -15,9 +17,6 @@
 <div><a href ng-click="selected='click'">Tab: Click</a></div>
 <div><a href ng-click="selected='clicktext'">Tab: Click Text</a></div>
 <div><a href ng-click="show=!show">Toggle Tab ({{show ? 'show' : 'hide' }})</a></div>
-
-<br><br>
-
 <div><a href ng-click="disabled=!disabled">Toogle Disabled</a></div>
 <div><a href="/404">404</a></div>
 

@@ -7,7 +7,7 @@
      * @ngdoc directive
      * @name fs.directives:fs-tabnav
      * @restrict E
-     * @param {string} fs-selected Selected the tab based on the tab index or the tab name
+     * @param {string} fs-selected Selected the tab based on the tab name
     */
 
     /**
@@ -34,31 +34,32 @@
             link: function($scope, element, attrs, ctrl, $transclude) {
 
                 var stateChangeSuccess = function(event, toState, toParams, fromState, fromParams) {
-                    angular.forEach($scope.items,function(item,index) {
+                    angular.forEach($scope.items,function(item) {
                       if(item.url==$location.$$url) {
-                        $scope.selected = index;
+                        $scope.selected = item.name;
                       }
                     });
                 }
 
                 $scope.$on('$stateChangeSuccess',stateChangeSuccess);
 
-                /*
-                $scope.$on('$destroy', function () {
-                  stateChangeSuccess();
-                });*/
+                var guid = function() {
+                    return 'xxxxxx'.replace(/[xy]/g, function(c) {
+                        var r = Math.random()*16|0, v = c === 'x' ? r : (r&0x3|0x8);
+                        return v.toString(16);
+                    });
+                }
 
                 $scope.accent = setRGB('accent');
-                $scope.selected = $scope.selected===undefined ? 0 : $scope.selected;
                 $scope.items = [];
 
                 $transclude(function(clone, scope) {
 
-                    var index = 0;
                     angular.forEach(clone,function(el) {
                         if(el.nodeName.match(/fs-tabnav-item/i)) {
 
-                            var template = el.textContent;
+                            var el = angular.element(el);
+                            var template = el.html();
 
                             if(template.match(/^{{/)) {
                               scope.$watch($interpolate(template), function (value) {
@@ -66,34 +67,42 @@
                               });
                             }
 
-                            var item = { template: template, href: 'javascript:;', show: true };
+                          	if(!el.attr('fs-name')) {
+                              el.attr('fs-name',guid());
+                            }
 
-                            if(el.getAttributeNode('fs-url')) {
-                                item.url = $interpolate(el.getAttributeNode('fs-url').nodeValue)(scope.$parent.$parent);
+                            var item = { 	template: template,
+                            				href: 'javascript:;',
+                            				name: el.attr('fs-name'),
+                            				style: { color: $scope.accent, borderColor: $scope.accent },
+                            				show: true };
+
+                            if(el.attr('fs-url')) {
+
+                                item.url = $interpolate(el.attr('fs-url'))(scope.$parent.$parent);
 
                                 scope.$watch(
-                                    function() {
-                                        return $interpolate(el.getAttributeNode('fs-url').nodeValue)(scope.$parent.$parent);
-                                    },
-                                    function (newValue, oldValue) {
-                                        if (newValue != oldValue) {
-                                            item.url = $interpolate(newValue)(scope.$parent.$parent);
+                                function() {
+                                    return $interpolate(el.attr('fs-url'))(scope.$parent.$parent);
+                                },
+                                function (newValue, oldValue) {
+                                    if (newValue != oldValue) {
+                                        item.url = $interpolate(newValue)(scope.$parent.$parent);
 
-                                            if (!item.url.match(/^http/i)) {
-                                                item.url = item.url.replace(/^#/, '');
-                                                if (!$location.$$html5) {
-                                                    item.url = '#' + item.url;
-                                                }
+                                        if (!item.url.match(/^http/i)) {
+                                            item.url = item.url.replace(/^#/, '');
+                                            if (!$location.$$html5) {
+                                                item.url = '#' + item.url;
                                             }
                                         }
                                     }
-                                );
+                                });
 
                                 if(!item.url.match(/^http/i)) {
                                   item.url = item.url.replace(/^#/,'');
 
                                   if(item.url==$location.$$url) {
-                                    $scope.selected = index;
+                                    $scope.selected = item.name;
                                   }
 
                                   if(!$location.$$html5) {
@@ -102,36 +111,29 @@
                                 }
                             }
 
-                            if(el.getAttributeNode('fs-click')) {
-                                item.click = el.getAttributeNode('fs-click').nodeValue;
+                            if(el.attr('fs-click')) {
+                                item.click = el.attr('fs-click');
                                 item.scope = scope.$parent.$parent;
                             }
 
-                            if(el.getAttributeNode('fs-show')) {
-                              $scope.$parent.$watch(el.getAttributeNode('fs-show').nodeValue,function(value) {
+                            if(el.attr('fs-show')) {
+                              $scope.$parent.$watch(el.attr('fs-show'),function(value) {
                                 item.show = value;
                               });
                             }
 
-                            if(el.getAttributeNode('fs-name')) {
-                                item.name = el.getAttributeNode('fs-name').nodeValue;
-                            }
-
-                            item.style = { color: $scope.accent, borderColor: $scope.accent };
-
-                            if(el.getAttributeNode('fs-disabled')) {
-                              $scope.$parent.$watch(el.getAttributeNode('fs-disabled').nodeValue,function(value) {
+                            if(el.attr('fs-disabled')) {
+                              $scope.$parent.$watch(el.attr('fs-disabled'),function(value) {
                                 item.disabled = value;
                               });
                             }
 
                             $scope.items.push(item);
-                            index++;
                         }
                     });
                 });
 
-                $scope.click = function(item, event, index) {
+                $scope.click = function(item, event) {
                   if(item.disabled) {
                     return event.preventDefault();
                   }
@@ -139,8 +141,8 @@
                   //if item has a .url $scope.selected will get updated by stateChangeSuccess().
                   //the one exception is if the current url is the same as item.url then stateChangeSuccess() wont fire  we need to manually change $scope.selected
                   var url = item.url ? item.url.replace(/^#/,'') : false;
-				  if(!url || url==$location.$$url)
-                    $scope.selected = item.name || index;
+				          if(!url || url==$location.$$url)
+                    $scope.selected = item.name;
 
                   if(item.click) {
                       item.scope.$eval(item.click);
