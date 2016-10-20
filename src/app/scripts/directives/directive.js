@@ -59,7 +59,7 @@
                         if(el.nodeName.match(/fs-tabnav-item/i)) {
 
                             var el = angular.element(el);
-                            var template = el.html();
+                            var template = el.text();
 
                             if(template.match(/^{{/)) {
                               scope.$watch($interpolate(template), function (value) {
