@@ -43,7 +43,7 @@
                     });
                 }
 
-                $scope.$on('$stateChangeStart',stateChangeSuccess);
+                $scope.$on('$stateChangeSuccess',stateChangeSuccess);
 
                 var guid = function() {
                     return 'xxxxxx'.replace(/[xy]/g, function(c) {
