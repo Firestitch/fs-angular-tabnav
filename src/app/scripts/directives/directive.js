@@ -22,7 +22,7 @@
     */
 
     angular.module('fs-angular-tabnav',[])
-    .directive('fsTabnav', function($location, $interpolate, fsTabnavTheme, $compile) {
+    .directive('fsTabnav', function($location, $interpolate, fsTabnavTheme, $compile, $timeout) {
         return {
             templateUrl: 'views/directives/tabnav.html',
             restrict: 'E',
@@ -36,12 +36,14 @@
                 var stateChangeSuccess = function(event, toState, toParams, fromState, fromParams) {
                     angular.forEach($scope.items,function(item) {
                       if(item.url==$location.$$url) {
-                        $scope.selected = item.name;
+                      	$timeout(function() {
+                        	$scope.selected = item.name;
+                        });
                       }
                     });
                 }
 
-                $scope.$on('$stateChangeSuccess',stateChangeSuccess);
+                $scope.$on('$stateChangeStart',stateChangeSuccess);
 
                 var guid = function() {
                     return 'xxxxxx'.replace(/[xy]/g, function(c) {

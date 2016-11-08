@@ -23,7 +23,7 @@
     */
 
     angular.module('fs-angular-tabnav',[])
-    .directive('fsTabnav', function($location, $interpolate, fsTabnavTheme, $compile) {
+    .directive('fsTabnav', function($location, $interpolate, fsTabnavTheme, $compile, $timeout) {
         return {
             templateUrl: 'views/directives/tabnav.html',
             restrict: 'E',
@@ -37,12 +37,14 @@
                 var stateChangeSuccess = function(event, toState, toParams, fromState, fromParams) {
                     angular.forEach($scope.items,function(item) {
                       if(item.url==$location.$$url) {
-                        $scope.selected = item.name;
+                      	$timeout(function() {
+                        	$scope.selected = item.name;
+                        });
                       }
                     });
                 }
 
-                $scope.$on('$stateChangeSuccess',stateChangeSuccess);
+                $scope.$on('$stateChangeStart',stateChangeSuccess);
 
                 var guid = function() {
                     return 'xxxxxx'.replace(/[xy]/g, function(c) {
@@ -226,18 +228,11 @@ angular.module('fs-angular-tabnav').run(['$templateCache', function($templateCac
   'use strict';
 
   $templateCache.put('views/directives/tabnav.html',
-    "<div class=\"md-tabs\">\r" +
-    "\n" +
-    "\t<a ng-href=\"{{item.url}}\" ng-repeat=\"item in items\" ng-click=\"click(item,$event);\" class=\"md-tab\" ng-class=\"{ disabled: item.disabled, show: item.show }\" ng-style=\"(selected==item.name) && item.style\">\r" +
-    "\n" +
-    "    \t{{item.template}}\r" +
-    "\n" +
-    "\t</a>\r" +
-    "\n" +
-    "\r" +
-    "\n" +
-    "\t<div class=\"cf\"></div>\r" +
-    "\n" +
+    "<div class=\"md-tabs\">\n" +
+    "\t<a ng-href=\"{{item.url}}\" ng-repeat=\"item in items\" ng-click=\"click(item,$event);\" class=\"md-tab\" ng-class=\"{ disabled: item.disabled, show: item.show }\" ng-style=\"(selected==item.name) && item.style\">\n" +
+    "    \t{{item.template}}\n" +
+    "\t</a>\n" +
+    "\t<div class=\"cf\"></div>\n" +
     "</div>"
   );
 
