@@ -16,13 +16,13 @@
      * @restrict E
      * @param {string} fs-url The url that the browser will be redirected to when the tab is clicked
      * @param {string} fs-name The name of the tab used for selecting the active tab through fs-tabnav.fs-selected
-     * @param {expression} fs-show The expression used to show the tab. Defaults to true
+     * @param {expression|function} fs-show The expression or function used to determine if the tab should be shown. Defaults to true
      * @param {string} fs-disabled When set to true the tab will be in a disabled state
      * @param {function} fs-click A function that is fired when the tab is clicked
     */
 
-    angular.module('fs-angular-tabnav',[])
-    .directive('fsTabnav', function($location, $interpolate, fsTabnavTheme, $compile, $timeout) {
+    angular.module('fs-angular-tabnav',['fs-angular-util'])
+    .directive('fsTabnav', function($location, $interpolate, fsTabnavTheme, $compile, $timeout, fsUtil) {
         return {
             templateUrl: 'views/directives/tabnav.html',
             restrict: 'E',
@@ -33,24 +33,16 @@
 
             link: function($scope, element, attrs, ctrl, $transclude) {
 
-                var stateChangeSuccess = function(event, toState, toParams, fromState, fromParams) {
+                $scope.$on('$stateChangeSuccess',function(event, toState, toParams, fromState, fromParams) {
                     angular.forEach($scope.items,function(item) {
                       if(item.url==$location.$$url) {
                       	$timeout(function() {
+                      		debugger;
                         	$scope.selected = item.name;
                         });
                       }
                     });
-                }
-
-                $scope.$on('$stateChangeSuccess',stateChangeSuccess);
-
-                var guid = function() {
-                    return 'xxxxxx'.replace(/[xy]/g, function(c) {
-                        var r = Math.random()*16|0, v = c === 'x' ? r : (r&0x3|0x8);
-                        return v.toString(16);
-                    });
-                }
+                });
 
                 $scope.accent = setRGB('accent');
                 $scope.items = [];
@@ -70,7 +62,7 @@
                             }
 
                           	if(!el.attr('fs-name')) {
-                              el.attr('fs-name',guid());
+                              el.attr('fs-name',fsUtil.guid());
                             }
 
                             var item = { 	template: template,
@@ -119,9 +111,15 @@
                             }
 
                             if(el.attr('fs-show')) {
-                              $scope.$parent.$watch(el.attr('fs-show'),function(value) {
-                                item.show = value;
-                              });
+                            	if(angular.isFunction($scope.$parent[el.attr('fs-show')])) {
+                            		var func = $scope.$parent[el.attr('fs-show')];
+
+									item.show = func();
+                            	} else {
+	                             	$scope.$parent.$watch(el.attr('fs-show'),function(value) {
+	                                	item.show = value;
+	                            	});
+	                            }
                             }
 
                             if(el.attr('fs-disabled')) {
@@ -134,6 +132,12 @@
                         }
                     });
                 });
+
+            	angular.forEach($scope.items,function(item) {
+            		if(!$scope.selected && item.disabled!==true) {
+            			$scope.selected = item.name;
+            		}
+            	});
 
                 $scope.click = function(item, event) {
                   if(item.disabled) {

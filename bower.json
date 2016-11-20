@@ -5,6 +5,9 @@
     "dist/tabnav.js",
     "dist/tabnav.css"
   ],
+  "dependencies": {
+    "fs-angular-util": "latest"
+  },
   "authors": [
     "Firestitch Inc."
   ],

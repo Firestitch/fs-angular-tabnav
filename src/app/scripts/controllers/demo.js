@@ -15,5 +15,9 @@
     $scope.click = function() {
         alert('clicked!');
     }
+
+    $scope.hasPermission = function() {
+    	return false;
+    }
 });
 
