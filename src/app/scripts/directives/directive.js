@@ -37,7 +37,6 @@
                     angular.forEach($scope.items,function(item) {
                       if(item.url==$location.$$url) {
                       	$timeout(function() {
-                      		debugger;
                         	$scope.selected = item.name;
                         });
                       }
