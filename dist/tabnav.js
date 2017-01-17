@@ -55,10 +55,10 @@
                             var el = angular.element(el);
                             var template = el.text();
 
-                            if(template.match(/^{{/)) {
-                              scope.$watch($interpolate(template), function (value) {
-                                item.template = $interpolate(value)(scope.$parent.$parent);
-                              });
+                            if(template.match(/{{/)) {
+                            	scope.$watch($interpolate(template), function (value) {
+                               		item.template = $interpolate(value)(scope.$parent.$parent);
+                              	});
                             }
 
                           	if(!el.attr('fs-name')) {

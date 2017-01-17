@@ -1,7 +1,7 @@
 {
   "name": "fs-angular-tabnav",
   "namespace": "tabnav",
-  "port": "5017",
+  "port": "5042",
   "moduleName": "app",
   "version": "0.0.0",
   "appPath": "app",
