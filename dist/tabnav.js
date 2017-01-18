@@ -23,7 +23,7 @@
     */
 
     angular.module('fs-angular-tabnav',['fs-angular-util'])
-    .directive('fsTabnav', function($location, $interpolate, fsTabnavTheme, $compile, $timeout, fsUtil) {
+    .directive('fsTabnav', function($location, $interpolate, fsTabnavTheme, $compile, $timeout, fsUtil, $sce) {
         return {
             templateUrl: 'views/directives/tabnav.html',
             restrict: 'E',
@@ -53,11 +53,11 @@
                         if(el.nodeName.match(/fs-tabnav-item/i)) {
 
                             var el = angular.element(el);
-                            var template = el.text();
+                            var template = el.html();
 
                             if(template.match(/{{/)) {
                             	scope.$watch($interpolate(template), function (value) {
-                               		item.template = $interpolate(value)(scope.$parent.$parent);
+                               		item.template = $sce.trustAsHtml($interpolate(value)(scope.$parent.$parent));
                               	});
                             }
 
@@ -65,7 +65,7 @@
                               el.attr('fs-name',fsUtil.guid());
                             }
 
-                            var item = { 	template: template,
+                            var item = { 	template: $sce.trustAsHtml(template),
                             				href: 'javascript:;',
                             				name: el.attr('fs-name'),
                             				style: { color: $scope.accent, borderColor: $scope.accent },
@@ -233,11 +233,7 @@ angular.module('fs-angular-tabnav').run(['$templateCache', function($templateCac
   $templateCache.put('views/directives/tabnav.html',
     "<div class=\"md-tabs\">\r" +
     "\n" +
-    "\t<a ng-href=\"{{item.url}}\" ng-repeat=\"item in items\" ng-click=\"click(item,$event);\" class=\"md-tab\" ng-class=\"{ disabled: item.disabled, show: item.show }\" ng-style=\"(selected==item.name) && item.style\">\r" +
-    "\n" +
-    "    \t{{item.template}}\r" +
-    "\n" +
-    "\t</a>\r" +
+    "\t<a ng-href=\"{{item.url}}\" ng-repeat=\"item in items\" ng-click=\"click(item,$event);\" class=\"md-tab\" ng-class=\"{ disabled: item.disabled, show: item.show }\" ng-style=\"(selected==item.name) && item.style\" ng-bind-html=\"item.template\"></a>\r" +
     "\n" +
     "\t<div class=\"cf\"></div>\r" +
     "\n" +

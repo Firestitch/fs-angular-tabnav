@@ -22,7 +22,7 @@
     */
 
     angular.module('fs-angular-tabnav',['fs-angular-util'])
-    .directive('fsTabnav', function($location, $interpolate, fsTabnavTheme, $compile, $timeout, fsUtil) {
+    .directive('fsTabnav', function($location, $interpolate, fsTabnavTheme, $compile, $timeout, fsUtil, $sce) {
         return {
             templateUrl: 'views/directives/tabnav.html',
             restrict: 'E',
@@ -52,11 +52,11 @@
                         if(el.nodeName.match(/fs-tabnav-item/i)) {
 
                             var el = angular.element(el);
-                            var template = el.text();
+                            var template = el.html();
 
                             if(template.match(/{{/)) {
                             	scope.$watch($interpolate(template), function (value) {
-                               		item.template = $interpolate(value)(scope.$parent.$parent);
+                               		item.template = $sce.trustAsHtml($interpolate(value)(scope.$parent.$parent));
                               	});
                             }
 
@@ -64,7 +64,7 @@
                               el.attr('fs-name',fsUtil.guid());
                             }
 
-                            var item = { 	template: template,
+                            var item = { 	template: $sce.trustAsHtml(template),
                             				href: 'javascript:;',
                             				name: el.attr('fs-name'),
                             				style: { color: $scope.accent, borderColor: $scope.accent },

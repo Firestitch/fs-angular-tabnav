@@ -1,6 +1,4 @@
 <div class="md-tabs">
-	<a ng-href="{{item.url}}" ng-repeat="item in items" ng-click="click(item,$event);" class="md-tab" ng-class="{ disabled: item.disabled, show: item.show }" ng-style="(selected==item.name) && item.style">
-    	{{item.template}}
-	</a>
+	<a ng-href="{{item.url}}" ng-repeat="item in items" ng-click="click(item,$event);" class="md-tab" ng-class="{ disabled: item.disabled, show: item.show }" ng-style="(selected==item.name) && item.style" ng-bind-html="item.template"></a>
 	<div class="cf"></div>
 </div>
