@@ -95,7 +95,7 @@
                                 if(!item.url.match(/^http/i)) {
                                   item.url = item.url.replace(/^#/,'');
 
-                                  if(item.url==$location.$$url.replace(/\?.*/)) {
+                                  if(item.url==$location.$$url.replace(/\?.*/,'')) {
                                     $scope.selected = item.name;
                                   }
 
