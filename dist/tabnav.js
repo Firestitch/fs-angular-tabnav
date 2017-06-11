@@ -119,7 +119,7 @@ angular.module('fs-angular-tabnav').run(['$templateCache', function($templateCac
 
 
   $templateCache.put('views/directives/tabnavitem.html',
-    "<a ng-href=\"url\" ng-click=\"ngClick($event)\" class=\"md-tab\" ng-class=\"{ disabled: disabled, selected: selected==name }\" ng-hide=\"!show\" ng-transclude></a>"
+    "<a ng-href=\"url\" ng-click=\"ngClick($event)\" class=\"md-tab\" ng-class=\"{ disabled: disabled, selected: selected==name, 'fs-theme-primary-border-color': selected==name, 'fs-theme-primary-color': selected==name }\" ng-hide=\"!show\" ng-transclude></a>"
   );
 
 }]);
