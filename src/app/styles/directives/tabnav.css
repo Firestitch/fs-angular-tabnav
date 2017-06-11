@@ -10,14 +10,6 @@ fs-tabnav-content {
     display: block;
 }
 
-fs-tabnav .md-tab {
-	display: none;
-}
-
-fs-tabnav .md-tab.show {
-	display: inline;
-}
-
 fs-tabnav .md-tabs {
 	border-bottom: 1px solid #E1E1E1;
 }
@@ -28,7 +20,24 @@ fs-tabnav a.disabled {
 }
 
 fs-tabnav .md-tabs a {
+	border-bottom-width: 0;
+	border-bottom-style: solid;
+	text-decoration: none;
+    padding-top: 0;
+    padding-bottom: 0;
+    line-height: 50px;
+    height: 50px;
+    vertical-align: middle;
+}
+
+fs-tabnav .md-tabs a.selected {
 	color: #757575;
 	text-decoration: none;
-	border-bottom: 2px solid transparent;
+	border-bottom-width: 2px;
+}
+
+fs-tabnav .md-tabs:after {
+    content: '';
+    display: block;
+    clear: both;
 }
