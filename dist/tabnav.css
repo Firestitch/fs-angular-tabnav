@@ -19,7 +19,7 @@ fs-tabnav a.disabled {
 	color: #ccc !important;
 }
 
-fs-tabnav .md-tabs a {
+fs-tabnav .md-tabs > a {
 	border-bottom-width: 0;
 	border-bottom-style: solid;
 	text-decoration: none;
