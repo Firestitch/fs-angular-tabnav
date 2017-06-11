@@ -108,8 +108,18 @@
 angular.module('fs-angular-tabnav').run(['$templateCache', function($templateCache) {
   'use strict';
 
+  $templateCache.put('views/directives/alerts.html',
+    "<alert ng-repeat=\"alert in alerts\" type=\"{{alert.type}}\" close=\"alert.close()\">{{ alert.msg }}</alert>"
+  );
+
+
   $templateCache.put('views/directives/tabnav.html',
     "<div class=\"md-tabs\" ng-transclude></div>"
+  );
+
+
+  $templateCache.put('views/directives/tabnavitem.html',
+    "<a ng-href=\"url\" ng-click=\"ngClick($event)\" class=\"md-tab\" ng-class=\"{ disabled: disabled, selected: selected==name }\" ng-hide=\"!show\" ng-transclude></a>"
   );
 
 }]);
