@@ -81,8 +81,10 @@
 					$scope.$parent.$parent.selected = $scope.name;
 
 					if($scope.click) {
-						$scope.$eval($scope.click);
-					 	event.preventDefault();
+						var result = $scope.$eval($scope.click);
+						if(result!==undefined) {
+					 		event.preventDefault();
+					 	}
 					}
                 }
 
