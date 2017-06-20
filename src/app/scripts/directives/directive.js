@@ -63,7 +63,7 @@
 
 	        	selectedUrl();
 
-	        	if($scope.selected) {
+	        	if($scope.selected || (!controller.$scope.selected && !$scope.url)) {
 	        		select();
 	        	}
 
