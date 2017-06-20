@@ -7,15 +7,23 @@ angular
     'ngMaterial',
     'fs-angular-tabnav'
 ])
-.config(function ($stateProvider, $urlRouterProvider) {
+.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
 
     $urlRouterProvider.otherwise('/404');
     $urlRouterProvider.when('', '/demo');
     $urlRouterProvider.when('/', '/demo');
 
+    $locationProvider.html5Mode(true);
+
     $stateProvider
     .state('demo', {
         url: '/demo',
+        templateUrl: 'views/demo.html',
+        controller: 'DemoCtrl'
+    })
+
+    .state('general', {
+        url: '/general',
         templateUrl: 'views/demo.html',
         controller: 'DemoCtrl'
     })

@@ -13,7 +13,8 @@
     $scope.disabled = false;
     $scope.show = false;
 
-    $scope.click = function() {
+    $scope.click = function(e) {
+    	debugger;
         alert('clicked!');
     }
 

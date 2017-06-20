@@ -22,19 +22,22 @@
     */
 
     angular.module('fs-angular-tabnav',['fs-angular-util'])
-    .directive('fsTabnav', function($location, $interpolate, fsTabnavTheme, $compile, $timeout, fsUtil, $sce) {
+    .directive('fsTabnav', function($location, $interpolate, $compile, $timeout, fsUtil, $sce) {
         return {
-            templateUrl: 'views/directives/tabnav.html',
+            template: '<div class="md-tabs" ng-transclude></div>',
             restrict: 'E',
             transclude: true,
             scope: {
                selected: "=?fsSelected"
+            },
+            controller: function($scope) {
+            	this.$scope = $scope;
             }
         };
     })
  	.directive('fsTabnavItem', function(fsUtil,$location) {
         return {
-            templateUrl: 'views/directives/tabnavitem.html',
+            template: '<a ng-href="{{url}}" ng-click="ngClick($event)" class="md-tab" ng-class="{ disabled: disabled, selected: selected==name, \'fs-theme-primary-border-color\': selected==name, \'fs-theme-primary-color\': selected==name }" ng-hide="!show" ng-transclude></a>',
             replace: true,
             restrict: 'E',
             transclude: true,
@@ -55,53 +58,39 @@
             	if(!$scope.name) {
                     $scope.name = fsUtil.guid();
                 }
+            },
+            link: function($scope, element, attr, controller) {
 
-                if(!$scope.$parent.$parent.selected) {
-                	$scope.$parent.$parent.selected = $scope.name;
-                }
+	        	selectedUrl();
 
-                selectUrl();
+	        	if($scope.selected) {
+	        		select();
+	        	}
 
-            	$scope.$parent.$parent.$watch('selected',function(selected) {
-            		$scope.selected = selected;
-            	});
+				$scope.$on('$stateChangeSuccess',selectedUrl);
 
-                $scope.$on('$stateChangeSuccess',selectUrl);
+	        	controller.$scope.$watch('selected',function(selected) {
+	        		$scope.selected = selected;
+	        	});
 
-            	$scope.ngClick = function(event) {
-					if($scope.disabled) {
-						return event.preventDefault();
+	        	$scope.ngClick = function(e) {
+	        		$scope.click({ $event: e });
+
+					if(!$scope.url) {
+						select();
 					}
+	        	}
 
-					//if item has a .url $scope.selected will get updated by stateChangeSuccess().
-					//the one exception is if the current url is the same as item.url then stateChangeSuccess() wont fire  we need to manually change $scope.selected
-					//var url = $scope.url ? item.url.replace(/^#/,'') : false;
-					//if(!url || url==$location.$$url)
-					$scope.$parent.$parent.selected = $scope.name;
-
-					if($scope.click) {
-						var result = $scope.$eval($scope.click);
-						if(result!==undefined) {
-					 		event.preventDefault();
-					 	}
-					}
+	        	function selectedUrl() {
+	        		if ($scope.url && $scope.url.replace(/^\/[#\!]/,'') == $location.$$url) {
+                		select();
+                	}
                 }
 
-                function selectUrl() {
-					if($scope.url && $scope.url.replace(/^[^\/]+/,'')==$location.$$url.replace(/\?.*/,'')) {
-	                	$scope.$parent.$parent.selected = $scope.name;
-	              	}
-                }
+                function select() {
+	        		controller.$scope.selected = $scope.name;
+	        	}
             }
         }
-    })
-    .provider('fsTabnavTheme',function($mdThemingProvider){
-    return {
-      $get : function() {
-        return {
-          themeColors : $mdThemingProvider
-        };
-      }
-    };
-  });
+    });
 })();
