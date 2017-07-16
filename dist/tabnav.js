@@ -25,7 +25,7 @@
     angular.module('fs-angular-tabnav',['fs-angular-util'])
     .directive('fsTabnav', function($location, $interpolate, $compile, $timeout, fsUtil, $sce) {
         return {
-            template: '<div class="md-tabs" ng-transclude></div>',
+            template: '<div class="md-tabs" ng-transclude layout="row"></div>',
             restrict: 'E',
             transclude: true,
             scope: {

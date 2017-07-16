@@ -12,11 +12,17 @@ fs-tabnav-content {
 
 fs-tabnav .md-tabs {
 	border-bottom: 1px solid #E1E1E1;
+	overflow-x: auto;
 }
 
 fs-tabnav a.disabled {
 	cursor: default;
 	color: #ccc !important;
+}
+
+fs-tabnav .md-tab {
+	float: none;
+	overflow: visible;
 }
 
 fs-tabnav .md-tabs > a {
