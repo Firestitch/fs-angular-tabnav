@@ -24,14 +24,37 @@
     angular.module('fs-angular-tabnav',['fs-angular-util'])
     .directive('fsTabnav', function($location, $interpolate, $compile, $timeout, fsUtil, $sce) {
         return {
-            template: '<div class="md-tabs" ng-transclude layout="row"></div>',
+            template: '<div class="md-tabs" layout="row" ng-transclude="tabs"></div><div ng-transclude="content"></div>',
             restrict: 'E',
-            transclude: true,
+            transclude: {
+            	tabs:'fsTabnavItem',
+            	content:'?fsTabnavContent'
+            },
             scope: {
                selected: "=?fsSelected"
             },
             controller: function($scope) {
             	this.$scope = $scope;
+            }
+        };
+    })
+    .directive('fsTabnavPane', function() {
+        return {
+            template: '<div class="fs-tabnav-pane" ng-show="name==selected" ng-if="name==selected || pane.inited" ng-init="pane.inited=true" ng-transclude></div>',
+            restrict: 'E',
+            transclude: true,
+            scope: {
+               name: '@fsName',
+            },
+            require: '^fsTabnav',
+            controller: function($scope) {
+            	$scope.pane = { inited: false };
+            },
+            link: function($scope, element, attr, controller) {
+
+            	controller.$scope.$watch('selected',function(selected) {
+	        		$scope.selected = selected;
+	        	});
             }
         };
     })
@@ -50,16 +73,15 @@
                show: '=?fsShow'
             },
             controller: function($scope) {
-
-            	if($scope.show===undefined) {
-            		$scope.show = true;
-            	}
-
             	if(!$scope.name) {
                     $scope.name = fsUtil.guid();
                 }
             },
             link: function($scope, element, attr, controller) {
+
+            	if(!$scope.hasOwnProperty('show')) {
+            		$scope.show = true;
+            	}
 
 	        	selectedUrl();
 

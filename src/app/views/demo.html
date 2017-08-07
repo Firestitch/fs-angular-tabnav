@@ -1,5 +1,7 @@
 <fs-tabnav fs-selected="selected">
 	<fs-tabnav-item><div layout="row" layout-align="start center"><span>No Url</span></div></fs-tabnav-item>
+	<fs-tabnav-item fs-name="pane1">Pane 1</fs-tabnav-item>
+	<fs-tabnav-item fs-name="pane2">Pane 2</fs-tabnav-item>
     <fs-tabnav-item fs-url="/general"><div layout="row" layout-align="start center"><span>General</span> <md-icon>settings</md-icon></div></fs-tabnav-item>
     <fs-tabnav-item fs-url="/generalpermission" fs-show="hasPermission">General Permission</fs-tabnav-item>
     <fs-tabnav-item fs-url="/demo2" fs-name="general">Demo</fs-tabnav-item>
@@ -7,10 +9,21 @@
     <fs-tabnav-item fs-url="/settings" fs-name="settings" fs-disabled="disabled"><span class="test">Settings {{variable}}</span></fs-tabnav-item>
     <fs-tabnav-item fs-click="click($event)" fs-name="click" fs-disabled="disabled">Click</fs-tabnav-item>
     <fs-tabnav-item fs-click="text='Clicked text!!'" fs-name="clicktext" fs-disabled="disabled">Click: Text</fs-tabnav-item>
+
+	<fs-tabnav-content>
+		Text: {{text}}
+		<fs-tabnav-pane fs-name="pane1">
+			<div ng-controller="Pane1Ctrl">
+				Pane1
+				<div test-load></div>
+			</div>
+		</fs-tabnav-pane>
+		<fs-tabnav-pane fs-name="pane2">Pane2
+			<div test-load></div>
+		</fs-tabnav-pane>
+	</fs-tabnav-content>
 </fs-tabnav>
-<fs-tabnav-content>
-	Text: {{text}}
-</fs-tabnav-content>
+
 
 <h3>Selected: {{selected}}</h3>
 
