@@ -1,4 +1,3 @@
-
 (function () {
     'use strict';
 
@@ -22,35 +21,47 @@
     */
 
     angular.module('fs-angular-tabnav',['fs-angular-util'])
-    .directive('fsTabnav', function($location, $interpolate, $compile, $timeout, fsUtil, $sce) {
+    .directive('fsTabnav', function() {
         return {
             template: '<div class="md-tabs" layout="row" ng-transclude="tabs"></div><div ng-transclude="content"></div>',
             restrict: 'E',
             transclude: {
-            	tabs:'fsTabnavItem',
-            	content:'?fsTabnavContent'
+            	tabs: 'fsTabnavItem',
+            	content: '?fsTabnavContent'
             },
             scope: {
-               selected: "=?fsSelected"
+               selected: '=?fsSelected',
+               id: '@fsId'
             },
             controller: function($scope) {
-            	this.$scope = $scope;
+            	var self = this;
+
+            	self.$scope = $scope;
+            	self.$scope.panes = {};
             }
         };
     })
-    .directive('fsTabnavPane', function() {
+    .directive('fsTabnavPane', function(fsUtil) {
         return {
-            template: '<div class="fs-tabnav-pane" ng-show="name==selected" ng-if="name==selected || pane.inited" ng-init="pane.inited=true" ng-transclude></div>',
+            template: '<div class="fs-tabnav-pane" ng-show="name==selected" xxx="{{id}}-{{guid}}-{{panes}}" ng-if="name==selected || panes[id][guid]" ng-init="panes[id][guid]=true" ng-transclude></div>',
             restrict: 'E',
             transclude: true,
             scope: {
-               name: '@fsName',
+               name: '@fsName'
             },
             require: '^fsTabnav',
             controller: function($scope) {
-            	$scope.pane = { inited: false };
+            	$scope.guid = fsUtil.guid();
             },
             link: function($scope, element, attr, controller) {
+            	$scope.panes = controller.$scope.panes;
+
+            	controller.$scope.$watch('id',function(id) {
+	        		$scope.id = id;
+	        		if(!$scope.panes[id]) {
+	        			$scope.panes = {};
+	        		}
+	        	});
 
             	controller.$scope.$watch('selected',function(selected) {
 	        		$scope.selected = selected;
